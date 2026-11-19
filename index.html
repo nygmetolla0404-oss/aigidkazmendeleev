@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="kk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI-ГИД: Қазақстанның химия әлеміне саяхат</title>
+<meta name="description" content="Пәнаралық байланысты жүзеге асыруға арналған цифрлық білім беру шешімі. Автор: Абдихалилова Мохинур Абдимуталовна.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=6">
+</head>
+<body class="home">
+
+<canvas id="world"></canvas>
+<div id="labels"></div>
+<div id="nowebgl">⚠️ Бұл құрылғыда 3D графика (WebGL) қолжетімсіз. Мәзірдегі бөлімдер бәрібір жұмыс істейді.</div>
+
+<!-- ЖОҒАРҒЫ МӘЗІР -->
+<header id="top">
+  <button class="brand" data-go="home" title="Басты бет">
+    <svg viewBox="0 0 48 48" class="brand-mark"><circle cx="24" cy="24" r="22" fill="#ffd447"/><g fill="none" stroke="#1a3a9a" stroke-width="2.6"><ellipse cx="24" cy="24" rx="17" ry="6.5"/><ellipse cx="24" cy="24" rx="17" ry="6.5" transform="rotate(60 24 24)"/><ellipse cx="24" cy="24" rx="17" ry="6.5" transform="rotate(-60 24 24)"/></g><circle cx="24" cy="24" r="4" fill="#1a3a9a"/></svg>
+    <span><b>AI-ГИД</b><small>Қазақстанның химия әлемі</small></span>
+  </button>
+  <nav id="nav">
+    <button data-go="map"><svg viewBox="0 0 24 24"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2zM9 4v14M15 6v14"/></svg>Карта</button>
+    <button data-go="table"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Кесте</button>
+    <button data-go="lab" class="hot"><svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-9V3"/><path d="M7.5 15h9"/></svg>Зертхана</button>
+    <button data-go="tasks"><svg viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5M12 12v9M12 12 4 7.5"/></svg>Тапсырмалар</button>
+    <button data-go="quest"><svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></svg>Квест</button>
+    <button data-go="trailers"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z"/></svg>Трейлер</button>
+    <button data-go="idea"><svg viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0 0 12 3z"/></svg>Идея</button>
+    <button data-go="author"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Автор</button>
+  </nav>
+  <div class="tools">
+    <button class="tool xp" id="xpBadge" title="Жетістіктер"><svg viewBox="0 0 24 24"><path d="M6 3h12l3 6-9 12L3 9z"/><path d="M3 9h18M9 3l3 18 3-18"/></svg><b id="xpVal">0</b></button>
+    <button class="tool" id="eyeBtn" title="Белгілерді жасыру/көрсету"><svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button>
+    <button class="tool voice-btn" id="voiceBtn" title="Дыбыс"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9z"/><path class="w" d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/><path class="x" d="M16 9l6 6M22 9l-6 6"/></svg></button>
+  </div>
+</header>
+
+<!-- БАСТЫ ЭКРАН -->
+<div id="hero">
+  <span class="chip">🧬 Химия + Биология + География + Физика + Экология</span>
+  <h1><span class="ai">AI-ГИД:</span> <span class="goldt">Қазақстанның химия әлеміне саяхат</span></h1>
+  <p class="lead" data-say>Пәнаралық байланысты жүзеге асыруға арналған цифрлық білім беру шешімі. Үш өлшемді Қазақстан аралында кен орындарына порталдар арқылы саяхаттап, химияны табиғатпен, денсаулықпен, ғарышпен және тұрақты дамумен байланыстырамыз.</p>
+  <div class="ctas">
+    <button class="btn primary" id="startBtn">▶ Саяхатты бастау</button>
+    <button class="btn" data-start="drone">🚁 Дронмен ұшу</button>
+    <button class="btn" data-start="car">🚗 Электромобиль</button>
+    <button class="btn gold" data-go="lab">⚗️ Зертхана</button>
+  </div>
+  <div class="stats">
+    <div><b>26</b><span>элемент картада</span></div><div><b>14</b><span>табиғи нысан</span></div><div><b>118</b><span>элементті кесте</span></div><div><b>18</b><span>реакция</span></div>
+  </div>
+  <button class="author-chip" data-go="author"><img src="assets/author.jpg" alt=""><span><b>Абдихалилова Мохинур Абдимуталовна</b><small>Химия пәні мұғалімі · Айша бибі атындағы ЖББМ КММ</small></span></button>
+</div>
+
+<!-- КАРТА РЕЖИМДЕРІ -->
+<div id="wpanel" class="glass">
+  <button class="wp-h" id="wpToggle"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8 8l8 8M16 8l-8 8"/></svg>Карта бойынша саяхат <span class="chev">▾</span></button>
+  <div class="wp-in">
+    <div class="seg">
+      <button data-wmode="overview" class="on">🌐 Шолу</button>
+      <button data-wmode="drone">🚁 Дрон</button>
+      <button data-wmode="car">🚗 Электромобиль</button>
+      <button data-wmode="tour">🤖 AI-тур</button>
+    </div>
+    <div id="wpBody"></div>
+  </div>
+</div>
+<div id="tpad">
+  <div class="pad"><button data-t="up">▲</button><div><button data-t="left">◀</button><button data-t="right">▶</button></div><button data-t="down">▼</button></div>
+  <div class="pad2"><button data-t="rise" class="dr">⤒</button><button data-t="fall" class="dr">⤓</button><button id="tSpray" class="dr">💧</button><button id="tEnter">Кіру</button></div>
+</div>
+
+<!-- AI-ГИД СУБТИТРІ -->
+<div id="subtitle">
+  <button class="st-play" onclick="Guide.pause()" title="Кідірту"><svg viewBox="0 0 24 24"><path class="pa" d="M8 5v14M16 5v14"/><path class="pl" d="M7 5l12 7-12 7z"/></svg></button>
+  <div><b>AI-ГИД</b><div class="st-text"></div></div>
+  <button class="st-x" onclick="Guide.hide()" title="Жабу">✕</button>
+</div>
+
+<!-- ============ БӨЛІМДЕР ============ -->
+<section class="page" id="pg-table"><div class="page-in">
+  <h2 class="sec-title">Д.И. Менделеевтің периодтық жүйесі</h2>
+  <p class="sec-sub">Сары <b style="color:var(--gold)">KZ</b> белгісі бар элементтер Қазақстанда өндіріледі. Кез келген элементті басыңыз — портал ашылады.</p>
+  <div class="pt-filter"><button class="btn sm on" data-ptf="all">Барлығы</button><button class="btn sm" data-ptf="kz">Тек Қазақстан элементтері</button><button class="btn sm" data-ptf="bio">Ағзаға қажет элементтер</button></div>
+  <div class="pt-wrap"><div class="pt" id="ptGrid"></div></div>
+  <div class="pt-legend" id="ptLegend"></div>
+</div></section>
+
+<section class="page" id="pg-lab"><div class="page-in">
+  <h2 class="sec-title">Виртуалды химиялық зертхана</h2>
+  <p class="sec-sub">Алдымен қорғаныс құралдарын киіңіз! Содан кейін сөредегі заттарды (шеге, бор, ерітінділер...) стаканға сүйреңіз немесе басыңыз — реакцияны көріңіз.</p>
+  <div class="lab">
+    <div class="panel shelf"><h3 style="font-size:16px">🧴 Реактивтер сөресі</h3><div class="reag-grid" id="shelf"></div></div>
+    <div class="panel bench" id="bench">
+      <div class="locked" id="ppeLock">
+        <div style="font-size:44px">🥽</div>
+        <h3>Қауіпсіздік ережесі: қорғаныс құралдарын таңдаңыз</h3>
+        <p style="color:var(--muted);max-width:520px;margin:0">Зертханаға кіру үшін тек <b>қажетті</b> құралдарды табыңыз. Қате таңдау — айып ұпай!</p>
+        <div class="ppe-area">
+          <svg width="130" height="200" viewBox="0 0 130 200">
+            <circle cx="65" cy="40" r="26" fill="#f2c9a0"/><rect id="ppeCoat" x="25" y="70" width="80" height="110" rx="16" fill="#3a4a7a"/>
+            <rect id="ppeGog" x="42" y="32" width="46" height="14" rx="7" fill="none" stroke="#3fd8ff" stroke-width="4" opacity="0"/>
+            <circle id="ppeGl1" cx="20" cy="150" r="11" fill="#4ef0a0" opacity="0"/><circle id="ppeGl2" cx="110" cy="150" r="11" fill="#4ef0a0" opacity="0"/>
+            <path d="M52 52 q13 10 26 0" stroke="#7a4a2a" stroke-width="3" fill="none"/></svg>
+          <div class="ppe-items" id="ppeItems"></div>
+        </div>
+        <div class="fb" id="ppeFb"></div>
+      </div>
+      <div class="in-beaker" id="inBeaker"></div>
+      <svg id="beakerSvg" viewBox="0 0 300 330"></svg>
+      <div class="row" style="margin-top:12px"><button class="btn sm" id="labMix">🔄 Араластыру</button><button class="btn sm" id="labHeat">🔥 Қыздыру</button><button class="btn sm" id="labClear">🧽 Стаканды тазалау</button></div>
+    </div>
+    <div class="panel result" id="labResult">
+      <h3>📋 Бақылау журналы</h3>
+      <p style="color:var(--muted);font-size:14px">Стаканға екі затты салыңыз. Мысалы: <b>темір шеге + мыс купоросы</b>, <b>бор + тұз қышқылы</b>, <b>сода + сірке суы</b>.</p>
+      <div id="labOut"></div>
+      <h4 style="margin-top:16px;font-size:14px">🔬 Ашылған реакциялар: <span id="labCount">0</span>/<span id="labTotal">18</span></h4>
+      <div class="journal" id="labJournal"></div>
+    </div>
+  </div>
+  <div class="panel tips-panel">
+    <h3 class="tips-h">✨ Эффектті тәжірибелер — AI-гид кеңестері <small>Жанады · жарқ етеді · көбік шығады · түс өзгереді</small></h3>
+    <div class="tips" id="labTips"></div>
+  </div>
+</div></section>
+
+<section class="page" id="pg-tasks"><div class="page-in">
+  <h2 class="sec-title">3D тапсырмалар: Функционалдық сауаттылық және «Адал азамат»</h2>
+  <p class="sec-sub">Өмірлік жағдаяттар, 3D модельдер, адалдық пен тұрақты даму дилеммалары — химия арқылы.</p>
+  <div class="task-tabs">
+    <button class="btn on" data-task="fs">📊 Функционалдық сауаттылық</button>
+    <button class="btn" data-task="adal">🤝 Адал азамат және тұрақты даму</button>
+    <button class="btn" data-task="mol">🧊 3D молекулалар</button>
+    <button class="btn" data-task="safe">🦺 Қауіпті тап!</button>
+  </div>
+  <div class="task-pane on" id="task-fs"><div class="cards3d" id="fsCards"></div></div>
+  <div class="task-pane" id="task-adal"><div class="panel" style="padding:24px">
+    <div class="dilemma">
+      <div class="cube-stage"><div class="cube" id="adalCube">
+        <div class="f1"><div><span>⚖️</span>Адалдық</div></div><div class="f2"><div><span>🌍</span>Тұрақты даму</div></div>
+        <div class="f3"><div><span>🧪</span>Ғылыми әділдік</div></div><div class="f4"><div><span>💧</span>Таза су</div></div>
+        <div class="f5"><div><span>♻️</span>Жауапкершілік</div></div><div class="f6"><div><span>🤝</span>Азамат</div></div>
+      </div></div>
+      <div id="adalBox"></div>
+    </div>
+    <div style="margin-top:20px"><div class="row" style="justify-content:space-between"><b>Адалдық индексі</b><span id="adalScore">0%</span></div><div class="meter"><i id="adalMeter"></i></div>
+      <div class="sdg" style="margin-top:14px"><span style="background:#26bde2;color:#022">ТДМ 6 · Таза су</span><span style="background:#fcc30b;color:#221">ТДМ 7 · Таза энергия</span><span style="background:#bf8b2e">ТДМ 12 · Жауапты тұтыну</span><span style="background:#3f7e44">ТДМ 13 · Климат</span><span style="background:#56c02b;color:#021">ТДМ 15 · Құрлықтағы тіршілік</span><span style="background:#00689d">ТДМ 16 · Әділдік</span></div></div>
+  </div></div>
+  <div class="task-pane" id="task-mol"><div class="mol-layout"><canvas id="molCanvas"></canvas><div class="panel" style="padding:18px" id="molPanel"></div></div></div>
+  <div class="task-pane" id="task-safe"><div class="panel" style="padding:20px">
+    <p style="margin-top:0">🔎 Зертханадағы <b>8 қауіпті жағдайды</b> тауып, басыңыз. Әрқайсысына дұрыс ережені біліп аласыз. Табылғаны: <b id="hzCount">0</b>/8</p>
+    <div class="scene-wrap"><svg id="hzScene" viewBox="0 0 900 520"></svg></div>
+    <div class="fb" id="hzFb" style="font-size:15px;margin-top:12px"></div>
+    <div class="panel" style="padding:16px;margin-top:16px"><h4>✍️ Тапсырма: қорғаныс құралдарын жазыңыз</h4>
+      <p style="font-size:14px;color:var(--muted);margin-top:0">Қышқылмен жұмыс істегенде міндетті 3 қорғаныс құралын жазыңыз (үтір арқылы):</p>
+      <div class="ans-row"><input id="ppeWrite" placeholder="Жауабыңыз..."><button class="btn sm" id="ppeWriteBtn">Тексеру</button></div><div class="fb" id="ppeWriteFb"></div></div>
+  </div></div>
+</div></section>
+
+<section class="page" id="pg-quest"><div class="page-in">
+  <h2 class="sec-title">Квест «Химиялық экспедиция»</h2>
+  <p class="sec-sub">Порталдарды ашып, элементтерді жинаңыз, миссияларды орындап, марапаттар алыңыз. Прогресс браузерде сақталады.</p>
+  <div class="quest-grid">
+    <div class="panel" style="padding:20px"><h3>🧾 Миссиялар</h3><div class="missions" id="missions"></div>
+      <h3 style="margin-top:22px">🗂️ Экспедиция паспорты: <span id="passCount">0</span>/26</h3><div class="passport" id="passport"></div></div>
+    <div class="panel" style="padding:20px"><h3>🏅 Жетістіктер мен марапаттар</h3><div class="badges" id="badges"></div>
+      <div class="row" style="margin-top:18px"><button class="btn sm" id="certBtn">📜 Сертификат алу</button><button class="btn sm" id="resetBtn">🗑️ Прогресті тазалау</button></div></div>
+  </div>
+</div></section>
+
+<section class="page" id="pg-trailers"><div class="page-in">
+  <h2 class="sec-title">Видеотрейлерлер оқушыларға</h2>
+  <p class="sec-sub">Әр бөлімге қысқа трейлер: нақты фотосуреттер, титрлер және AI-гидтің қазақша дауысы. Толық экранда көріңіз.</p>
+  <div class="trailers" id="trailerGrid"></div>
+  <div class="row" style="justify-content:center;margin-top:22px" id="ytLinks"></div>
+</div></section>
+
+<section class="page" id="pg-idea"><div class="page-in">
+  <h2 class="sec-title">Таратуға лайықты педагогикалық идея</h2>
+  <p class="sec-sub">«Педагогикалық идеялар фестивалі» республикалық конкурсы · Бағыты: <b>«Шеберлік палитрасы»</b> — жаратылыстану бағытындағы пәндер (химия) · Формат: TEDx, регламент 7 минут</p>
+  <div id="pedRoot"></div>
+</div></section>
+
+<section class="page" id="pg-author"><div class="page-in">
+  <div class="panel author">
+    <div class="ph"><img src="assets/author.jpg" alt="Абдихалилова Мохинур Абдимуталовна"></div>
+    <div>
+      <span class="chip">👩‍🔬 Жоба авторы</span>
+      <h2 style="margin-top:12px">Абдихалилова Мохинур Абдимуталовна</h2>
+      <div class="role">Химия пәні мұғалімі</div>
+      <div class="school">Айша бибі атындағы жалпы білім беретін мектеп КММ</div>
+      <blockquote data-say>Химия — тек формулалар емес. Ол — біздің жеріміздің байлығы, табиғатымыздың тынысы және болашағымыздың кілті. Оқушы өз елінің кен орындарын, көлдері мен ормандарын химия көзімен көрсе — білім өмірмен байланысады.</blockquote>
+      <div class="row" style="margin-top:18px"><span class="chip">🧪 Химия</span><span class="chip">🌿 Биология</span><span class="chip">🌍 География</span><span class="chip">⚛️ Физика</span><span class="chip">♻️ Экология</span><span class="chip">🤖 AI технологиялары</span></div>
+      <p style="margin-top:18px;font-size:15px"><b>Жоба тақырыбы:</b> «AI-ГИД: Қазақстанның химия әлеміне саяхат» — пәнаралық байланысты жүзеге асыруға арналған цифрлық білім беру шешімі.</p>
+      <p class="tiny" style="margin-top:20px">Карта: Natural Earth деректері. Фотосуреттер: Wikimedia Commons (CC лицензиялары). Дауыс: Microsoft нейрондық қазақ дауысы (Айгүл).</p>
+    </div>
+  </div>
+</div></section>
+
+<button class="page-close" id="pageClose" title="Картаға оралу">🗺️ Картаға оралу</button>
+
+<!-- AI-ГИД ЧАТ -->
+<button class="ai-fab" id="aiFab"><span class="robot"><svg viewBox="0 0 48 48"><rect x="10" y="14" width="28" height="22" rx="8" fill="#e9f3ff"/><rect x="14" y="19" width="20" height="11" rx="5" fill="#1a3a9a"/><circle cx="19.5" cy="24.5" r="2.6" fill="#7ef0ff"/><circle cx="28.5" cy="24.5" r="2.6" fill="#7ef0ff"/><path d="M24 14V8" stroke="#e9f3ff" stroke-width="2.5"/><circle cx="24" cy="7" r="2.6" fill="#ffd447"/><rect x="6" y="21" width="4" height="9" rx="2" fill="#e9f3ff"/><rect x="38" y="21" width="4" height="9" rx="2" fill="#e9f3ff"/></svg></span><span class="t"><b>AI-гид</b><small>сұрақ қой</small></span></button>
+<div class="panel ai-chat" id="aiChat">
+  <header><span class="robot sm"></span><div style="flex:1"><b>AI-гид</b><small>● онлайн · химия саяхатшысы</small></div><button class="btn sm" id="aiClose">✕</button></header>
+  <div class="ai-msgs" id="aiMsgs"></div>
+  <div class="ai-quick" id="aiQuick"></div>
+  <div class="ai-input"><input id="aiIn" placeholder="Сұрақ қойыңыз: «уран қайда?», «фламинго неге қызғылт?»"><button class="btn primary sm" id="aiSend">➤</button></div>
+</div>
+
+<div id="portalFx"><canvas id="portalCanvas"></canvas></div>
+<div class="modal" id="modal"><div class="modal-box" id="modalBox"></div></div>
+<div id="vr" aria-label="VR-портал">
+  <canvas id="vrCanvas"></canvas>
+  <div id="vrSpots"></div>
+  <div class="vr-top glass">
+    <button class="vr-back" id="vrBack">← Картаға оралу</button>
+    <div class="vr-ttl"><small id="vrSub"></small><b id="vrTitle"></b></div>
+    <button class="vr-nav" id="vrPrev" title="Алдыңғы">◀</button><button class="vr-nav" id="vrNext" title="Келесі">▶</button>
+  </div>
+  <div id="vrStep" class="glass"></div>
+  <p class="vr-hint">🖱️ Айналдыру · жақындату · жазуларды басыңыз</p>
+  <aside id="vrInfo" class="glass"><button id="vrFold" title="Ақпаратты жасыру">◂</button><div id="vrInfoBody"></div></aside>
+</div>
+<div class="player" id="player"></div>
+<div class="tooltip" id="tip"></div>
+<div class="toast" id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script src="assets/geo.js?v=6"></script>
+<script src="assets/data.js?v=6"></script>
+<script src="assets/deposits.js?v=6"></script>
+<script src="assets/audio/index.js?v=6"></script>
+<script src="assets/audio.js?v=6"></script>
+<script src="assets/app.js?v=6"></script>
+<script src="assets/world.js?v=6"></script>
+<script src="assets/vr.js?v=6"></script>
+<script src="assets/lab.js?v=6"></script>
+<script src="assets/tasks.js?v=6"></script>
+<script>boot();</script>
+</body>
+</html>
