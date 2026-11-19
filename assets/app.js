@@ -298,7 +298,7 @@ function initChat() {
   $('#aiFab').onclick = () => { $('#aiChat').classList.toggle('open'); if (!chat.started) { chat.started = true; botSay(CHAT_HI, [['🤖 Саяхатты бастау', () => { go('map', true); World.setMode('tour'); }], ['🧪 Уран қайда?', () => { meSay('Уран қайда?'); answer('уран'); }]]); } };
   $('#aiClose').onclick = () => $('#aiChat').classList.remove('open');
   const send = () => { const v = $('#aiIn').value; if (!v.trim()) return; meSay(v); $('#aiIn').value = ''; setTimeout(() => answer(v), 300); };
-  $('#aiSend').onclick = send; $('#aiIn').onkeydown = e => e.key === 'Enter' && send();
+  $('#aiSend').onclick = send; $('#aiIn').onkeydown = e => { if (e.key === 'Enter') send(); };
   const quick = ['Уран қайда?', 'Фламинго неге қызғылт?', 'Витаминдер', 'Дрон не шашады?', 'Қауіпсіздік ережесі', 'Шарын неге қызыл?', 'Электромобиль', 'Алтын'];
   $('#aiQuick').innerHTML = quick.map(q => `<button>${q}</button>`).join('');
   $$('#aiQuick button').forEach(b => b.onclick = () => { meSay(b.textContent); setTimeout(() => answer(b.textContent), 300); });

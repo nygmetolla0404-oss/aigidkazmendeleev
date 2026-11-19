@@ -40,7 +40,7 @@ function buildFS() {
   $$('#fsCards .flip').forEach(card => { const c = FS[+card.dataset.fs]; const fb = $('.fb', card);
     const win = () => { card.classList.add('flipped'); Guide.say(fsBack(c)); if (addTo('fs', c.id)) addXP(20, 'Функционалдық сауаттылық!'); };
     if (c.num) { const inp = $('input', card); const chk = () => { const v = parseFloat(inp.value.replace(',', '.')); if (v >= c.num[0] && v <= c.num[1]) win(); else { fb.className = 'fb no'; fb.textContent = isNaN(v) ? 'Сан енгізіңіз' : '❌ Қайта есептеп көріңіз. Бірліктерге назар аударыңыз!'; if (!isNaN(v)) Guide.say(FS_RETRY); } };
-      $('.ans-row button', card).onclick = chk; inp.onkeydown = e => e.key === 'Enter' && chk(); }
+      $('.ans-row button', card).onclick = chk; inp.onkeydown = e => { if (e.key === 'Enter') chk(); }; }
     else $$('[data-o]', card).forEach(b => b.onclick = () => { if (+b.dataset.o === c.a) { b.classList.add('ok'); setTimeout(win, 400); } else { b.classList.add('no'); fb.className = 'fb no'; fb.textContent = '❌ Ойланып көріңіз...'; Guide.say(VO.wrongAns); } });
     $('[data-again]', card).onclick = () => card.classList.remove('flipped');
     card.addEventListener('pointermove', e => { if (card.classList.contains('flipped')) return; const r = card.getBoundingClientRect(); const x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5; $('.inner', card).style.transform = `rotateY(${x * 14}deg) rotateX(${-y * 14}deg)`; });
@@ -120,7 +120,7 @@ const Mol = { i: 0, started: false,
       <div id="molInfo">${solved ? this.info(m) : ''}</div>
       <div class="row" style="margin-top:12px"><button class="btn sm" id="molPrev">◀</button><button class="btn sm" id="molHint">💡 Кеңес</button><button class="btn sm" id="molNext">▶</button></div>`;
     const chk = () => { const v = norm($('#molIn').value); if (m.ans.includes(v)) { $('#molFb').className = 'fb ok'; $('#molFb').textContent = '✅ Дұрыс!'; $('#molInfo').innerHTML = this.info(m); Guide.say(molSay(m)); if (addTo('mol', m.f)) addXP(20, `3D: ${m.n}`); } else { $('#molFb').className = 'fb no'; $('#molFb').textContent = '❌ Атомдарды қайта санаңыз.'; } };
-    $('#molChk').onclick = chk; $('#molIn').onkeydown = e => e.key === 'Enter' && chk();
+    $('#molChk').onclick = chk; $('#molIn').onkeydown = e => { if (e.key === 'Enter') chk(); };
     $('#molPrev').onclick = () => this.show(this.i - 1); $('#molNext').onclick = () => this.show(this.i + 1);
     $('#molHint').onclick = () => { $('#molFb').className = 'fb'; $('#molFb').textContent = `💡 Атау: «${m.n}»`; }; },
   info(m) { return `<div class="quiz" style="border-style:solid;margin-top:12px"><b>${m.n} — <span class="eq">${m.f.replace(/(\d)/g, '<sub>$1</sub>')}</span></b><br><span style="font-size:14px">🇰🇿 ${m.kz}</span></div>`; },
@@ -332,3 +332,4 @@ const PPEW_OK = 'Керемет: халат, қорғаныс көзілдірі
 const PPEW_NO = 'Тағы ойланыңыз: денені, көзді және қолды не қорғайды?';
 $('#annSay').onclick = () => Guide.say(ANN_KK);
 window.TASK_NARR = [FS_RETRY, MOL_ASK, PPEW_OK, PPEW_NO, ANN_KK, ...FS.flatMap(c => [fsFront(c), fsBack(c)]), ...ADAL.flatMap(d => [d.t, 'Адал таңдау! ' + d.why, 'Ойланып көріңіз. ' + d.why]), ...MOLS.map(molSay), ...HZ.map(h => h.t), ...TRAILERS.flatMap(t => t.slides.map(([, h, txt]) => h + '. ' + txt))];
+document.getElementById('ppeWrite').onkeydown = e => { if (e.key === 'Enter') document.getElementById('ppeWriteBtn').click(); };
